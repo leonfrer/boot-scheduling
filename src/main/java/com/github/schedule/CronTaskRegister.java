@@ -3,6 +3,7 @@ package com.github.schedule;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.config.CronTask;
+import org.springframework.scheduling.config.FixedRateTask;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -34,6 +35,27 @@ public class CronTaskRegister implements DisposableBean {
 
 			this.scheduledTasks.put(task, scheduleCronTask(cronTask));
 		}
+	}
+
+	public void addFixedRateTask(Runnable task, long interval) {
+		addFixedRateTask(new FixedRateTask(task, interval, 0));
+	}
+
+	public void addFixedRateTask(FixedRateTask fixedRateTask) {
+		if (fixedRateTask != null) {
+			Runnable task = fixedRateTask.getRunnable();
+			if (this.scheduledTasks.containsKey(task)) {
+				removeCronTask(task);
+			}
+
+			this.scheduledTasks.put(task, scheduledRateTask(fixedRateTask));
+		}
+	}
+
+	public ScheduledTask scheduledRateTask(FixedRateTask fixedRateTask) {
+		ScheduledTask scheduledTask = new ScheduledTask();
+		scheduledTask.future = this.taskScheduler.scheduleWithFixedDelay(fixedRateTask.getRunnable(), fixedRateTask.getInterval());
+		return scheduledTask;
 	}
 
 	public void removeCronTask(Runnable task) {

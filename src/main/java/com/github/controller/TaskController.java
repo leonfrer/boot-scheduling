@@ -27,7 +27,7 @@ public class TaskController {
 	@PostMapping("task")
 	public void addTask(@RequestBody TaskVo taskVo) {
 		SchedulingRunnable schedulingRunnable = new SchedulingRunnable(taskVo.getBeanName(), taskVo.getMethodName(), taskVo.getMethodParams());
-		cronTaskRegister.addCronTask(schedulingRunnable, taskVo.getCron());
+		cronTaskRegister.addFixedRateTask(schedulingRunnable, taskVo.getInterval());
 	}
 
 	/**

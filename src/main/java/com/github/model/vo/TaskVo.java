@@ -6,6 +6,7 @@ public class TaskVo {
 	private String methodName;
 	private String methodParams;
 	private String cron;
+	private Long interval;
 
 	public String getBeanName() {
 		return beanName;
@@ -37,5 +38,13 @@ public class TaskVo {
 
 	public void setCron(String cron) {
 		this.cron = cron;
+	}
+
+	public Long getInterval() {
+		return interval;
+	}
+
+	public void setInterval(Long interval) {
+		this.interval = interval;
 	}
 }
